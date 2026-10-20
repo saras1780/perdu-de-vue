@@ -18,6 +18,8 @@ class ItemController extends Controller
         $places = Place::orderBy('name')->get();
         $colors = Color::cases();
 
+        $totalPendingCount = Item::whereNull('returned_at')->count();
+
         $items = Item::with(['place', 'tags'])
             ->whereNull('returned_at')
             ->when($request->query('lieu'), function ($query, $placeId) {
@@ -29,12 +31,14 @@ class ItemController extends Controller
                 }
             })
             ->orderByDesc('found_on')
-            ->get();
+            ->paginate(9)
+            ->withQueryString();
 
         return view('items.index', [
             'items' => $items,
             'places' => $places,
             'colors' => $colors,
+            'totalPendingCount' => $totalPendingCount,
         ]);
     }
 

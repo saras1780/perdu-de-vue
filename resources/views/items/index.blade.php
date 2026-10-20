@@ -15,7 +15,7 @@
         <!-- Compteur d'objets en attente -->
         <div class="bg-rose-900 text-white px-6 py-4 rounded-2xl shadow-sm flex items-center gap-4 flex-shrink-0">
             <div>
-                <span class="text-2xl font-black block text-center">{{ $items->where('returned_at', null)->count() }}</span>
+                <span class="text-2xl font-black block text-center">{{ $totalPendingCount }}</span>
                 <span class="text-[10px] uppercase tracking-wider text-rose-200 font-semibold block">Objets en attente</span>
             </div>
             <a href="{{ route('items.create') }}" class="bg-rose-500 hover:bg-rose-400 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition shadow-sm flex items-center gap-1.5">
@@ -75,5 +75,9 @@
                 Aucun objet ne correspond à ces critères.
             </div>
         @endforelse
+    </div>
+
+    <div>
+        {{ $items->links() }}
     </div>
 </x-layouts.app>
