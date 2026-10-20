@@ -20,25 +20,34 @@ class ItemController extends Controller
 
         $totalPendingCount = Item::whereNull('returned_at')->count();
 
-        $items = Item::with(['place', 'tags'])
+        $tri = $request->query('tri');
+        $allowedSorts = ['date', 'nom'];
+        $sortChoice = in_array($tri, $allowedSorts) ? $tri : 'date';
+
+        $query = Item::with(['place', 'tags'])
             ->whereNull('returned_at')
             // Filtre par recherche text
-            ->when($request->query('q'), function ($query, $search) {
-                $query->where('name', 'like', '%' . $search . '%');
+            ->when($request->query('q'), function ($qQuery, $search) {
+                $qQuery->where('name', 'like', '%' . $search . '%');
             })
-            // Filtre par lieu
-            ->when($request->query('lieu'), function ($query, $placeId) {
-                $query->where('place_id', $placeId);
+            // Filtre par recherche lieu
+            ->when($request->query('lieu'), function ($qQuery, $placeId) {
+                $qQuery->where('place_id', $placeId);
             })
-            // Filtre par couleur
-            ->when($request->query('couleur'), function ($query, $color) {
+            // Filtre par recherche color
+            ->when($request->query('couleur'), function ($qQuery, $color) {
                 if (Color::tryFrom($color)) {
-                    $query->where('color', $color);
+                    $qQuery->where('color', $color);
                 }
-            })
-            ->orderByDesc('found_on')
-            ->paginate(9)
-            ->withQueryString();
+            });
+
+        if ($sortChoice === 'nom') {
+            $query->orderBy('name', 'asc');
+        } else {
+            $query->orderByDesc('found_on');
+        }
+
+        $items = $query->paginate(9)->withQueryString();
 
         return view('items.index', [
             'items' => $items,
