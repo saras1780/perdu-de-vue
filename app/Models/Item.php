@@ -2,11 +2,47 @@
 
 namespace App\Models;
 
+use App\Enums\Color;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Item extends Model
 {
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'place_id',
+        'name',
+        'description',
+        'color',
+        'found_on',
+        'returned_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'color' => Color::class,
+            'found_on' => 'date',
+            'returned_at' => 'date',
+        ];
+    }
+
+    public function place(): BelongsTo
+    {
+        return $this->belongsTo(Place::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function isReturned(): bool
+    {
+        return $this->returned_at !== null;
+    }
 }

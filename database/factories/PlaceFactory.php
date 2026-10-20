@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Place;
+use App\Enums\PlaceKind;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +18,8 @@ class PlaceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(3, true),
+            'kind' => fake()->randomElement(PlaceKind::cases()),
         ];
     }
 }
