@@ -25,10 +25,17 @@
         </div>
     </div>
 
-    <!-- Formulaire de filtres -->
+    <!-- Formulaire de filtres et recherche -->
     <div class="mb-8 bg-white p-6 rounded-3xl shadow-sm border border-rose-100">
         <form method="GET" action="{{ route('items.index') }}" class="flex flex-wrap gap-4 items-end">
+
+            <!-- Nouveau champ de recherche textuelle -->
             <div class="flex-1 min-w-[200px]">
+                <label for="q" class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Rechercher</label>
+                <input type="text" name="q" id="q" value="{{ request('q') }}" placeholder="Nom de l'objet..." class="w-full rounded-xl border-rose-200 shadow-sm focus:border-rose-500 focus:ring-rose-500 text-sm py-2.5 px-3 bg-rose-50/30">
+            </div>
+
+            <div class="flex-1 min-w-[180px]">
                 <label for="lieu" class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Lieu</label>
                 <select name="lieu" id="lieu" class="w-full rounded-xl border-rose-200 shadow-sm focus:border-rose-500 focus:ring-rose-500 text-sm py-2.5 bg-rose-50/30">
                     <option value="">Tous les lieux</option>
@@ -40,7 +47,7 @@
                 </select>
             </div>
 
-            <div class="flex-1 min-w-[200px]">
+            <div class="flex-1 min-w-[180px]">
                 <label for="couleur" class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Couleur</label>
                 <select name="couleur" id="couleur" class="w-full rounded-xl border-rose-200 shadow-sm focus:border-rose-500 focus:ring-rose-500 text-sm py-2.5 bg-rose-50/30">
                     <option value="">Toutes les couleurs</option>
@@ -57,7 +64,7 @@
                     Filtrer
                 </button>
 
-                @if(request('lieu') || request('couleur'))
+                @if(request('q') || request('lieu') || request('couleur'))
                     <a href="{{ route('items.index') }}" class="text-xs font-medium text-zinc-400 hover:text-zinc-700 underline">
                         Réinitialiser
                     </a>

@@ -22,9 +22,15 @@ class ItemController extends Controller
 
         $items = Item::with(['place', 'tags'])
             ->whereNull('returned_at')
+            // Filtre par recherche text
+            ->when($request->query('q'), function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            // Filtre par lieu
             ->when($request->query('lieu'), function ($query, $placeId) {
                 $query->where('place_id', $placeId);
             })
+            // Filtre par couleur
             ->when($request->query('couleur'), function ($query, $color) {
                 if (Color::tryFrom($color)) {
                     $query->where('color', $color);
