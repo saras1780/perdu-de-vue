@@ -15,6 +15,13 @@
             @endif
         </div>
 
+        <!-- CODE DE LA PHOTO -->
+        @if($item->photo)
+            <div class="my-6 p-4 bg-rose-50/40 rounded-3xl border border-rose-100 flex justify-center items-center shadow-inner">
+                <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}" class="max-h-80 w-auto object-contain rounded-2xl shadow-sm">
+            </div>
+        @endif
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Informations</h3>
@@ -74,7 +81,7 @@
                     Supprimer
                 </button>
             </form>
-            
+
         </div>
     </div>
 </x-layouts.app>

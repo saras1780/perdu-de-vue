@@ -31,6 +31,7 @@ class ItemRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:1000'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ];
     }
 
@@ -43,6 +44,7 @@ class ItemRequest extends FormRequest
             'place_id' => 'lieu',
             'description' => 'description',
             'tags' => 'étiquettes',
+            'photo' => 'photo',
         ];
     }
 

@@ -20,6 +20,7 @@ class Item extends Model
         'color',
         'found_on',
         'returned_at',
+        'photo',
     ];
 
     protected function casts(): array

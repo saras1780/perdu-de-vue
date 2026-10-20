@@ -56,8 +56,13 @@ class ItemController extends Controller
 
     public function store(ItemRequest $request): RedirectResponse
     {
-        $item = Item::create($request->validated());
+        $data = $request->validated();
 
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('items', 'public');
+        }
+
+        $item = Item::create($data);
         $item->tags()->sync($request->validated('tags') ?? []);
 
         return redirect()->route('items.index')
@@ -76,8 +81,16 @@ class ItemController extends Controller
 
     public function update(ItemRequest $request, Item $item): RedirectResponse
     {
-        $item->update($request->validated());
+        $data = $request->validated();
 
+        if ($request->hasFile('photo')) {
+            if ($item->photo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($item->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('items', 'public');
+        }
+
+        $item->update($data);
         $item->tags()->sync($request->validated('tags') ?? []);
 
         return redirect()->route('items.show', $item)

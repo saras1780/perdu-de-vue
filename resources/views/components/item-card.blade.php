@@ -10,7 +10,14 @@
                 </span>
                 <!-- Pastille de couleur -->
                 <span class="w-4 h-4 rounded-full border border-zinc-200 shadow-inner flex-shrink-0" style="background-color: {{ $item->color->value === 'multicolor' ? 'conic-gradient(red, yellow, green, blue, purple)' : $item->color->value }}"></span>
+
             </div>
+
+            @if ($item->photo)
+                <div class="mb-4 w-full h-44 rounded-2xl overflow-hidden border border-rose-100 bg-rose-50/30">
+                    <img src="{{ asset('storage/' . $item->photo) }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
+                </div>
+            @endif
 
             <!-- Nom de l'objet -->
             <h2 class="text-lg font-bold text-zinc-900 mb-1">

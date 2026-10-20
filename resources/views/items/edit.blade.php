@@ -7,7 +7,7 @@
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-zinc-200">
         <h1 class="text-2xl font-bold text-zinc-900 mb-6">Modifier l'objet</h1>
 
-        <form action="{{ route('items.update', $item) }}" method="POST" class="space-y-6">
+        <form action="{{ route('items.update', $item) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -69,6 +69,12 @@
                     @endforeach
                 </div>
                 @error('tags') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <x-label for="photo">Photo de l'objet (facultative)</x-label>
+                <input type="file" id="photo" name="photo" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer">
+                @error('photo') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
