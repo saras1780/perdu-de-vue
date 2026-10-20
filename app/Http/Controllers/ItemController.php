@@ -63,4 +63,44 @@ class ItemController extends Controller
         return redirect()->route('items.index')
             ->with('status', 'L\'objet a été ajouté.');
     }
+
+    public function edit(Item $item): View
+    {
+        return view('items.edit', [
+            'item' => $item,
+            'places' => Place::orderBy('name')->get(),
+            'colors' => Color::cases(),
+            'tags' => Tag::orderBy('name')->get(),
+        ]);
+    }
+
+    public function update(ItemRequest $request, Item $item): RedirectResponse
+    {
+        $item->update($request->validated());
+
+        $item->tags()->sync($request->validated('tags') ?? []);
+
+        return redirect()->route('items.show', $item)
+            ->with('status', 'L\'objet a été modifié.');
+    }
+
+    public function return(Item $item): RedirectResponse
+    {
+        if ($item->isReturned()) {
+            return back()->with('status', 'Cet objet a déjà été restitué le ' . $item->returned_at->format('d/m/Y') . '.');
+        }
+
+        $item->update(['returned_at' => today()]);
+
+        return redirect()->route('items.index')
+            ->with('status', '« ' . $item->name . ' » a retrouvé son propriétaire.');
+    }
+
+    public function destroy(Item $item): RedirectResponse
+    {
+        $item->delete();
+
+        return redirect()->route('items.index')
+            ->with('status', 'L\'objet a été supprimé.');
+    }
 }

@@ -51,6 +51,30 @@
             </div>
         @endif
 
-        <!-- La zone des boutons (modification, restitution, suppression) viendra ici à la prochaine étape -->
+        <div class="pt-6 border-t border-zinc-200 flex gap-4">
+            <a href="{{ route('items.edit', $item) }}" class="px-4 py-2 bg-zinc-100 text-zinc-800 font-semibold rounded-lg hover:bg-zinc-200 transition border border-zinc-300 shadow-sm">
+                Modifier
+            </a>
+
+
+            @if(!$item->isReturned())
+                <form action="{{ route('items.return', $item) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition shadow-sm active:scale-95">
+                        Restituer
+                    </button>
+                </form>
+            @endif
+
+            <form action="{{ route('items.destroy', $item) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet objet ?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition shadow-sm active:scale-95">
+                    Supprimer
+                </button>
+            </form>
+            
+        </div>
     </div>
 </x-layouts.app>
