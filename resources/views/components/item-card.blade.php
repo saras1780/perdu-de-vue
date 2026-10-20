@@ -27,7 +27,8 @@
             </h2>
 
             <p class="text-xs text-zinc-400 mb-4">
-                trouvé le {{ $item->found_on->format('d/m/Y') }}
+                Trouvé le {{ $item->found_on->isoFormat('D MMMM YYYY') }}
+                <span class="text-rose-500 font-medium">({{ $item->found_on->diffForHumans() }})</span>
             </p>
         </div>
 

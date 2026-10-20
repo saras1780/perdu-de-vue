@@ -9,9 +9,11 @@
         <div class="flex justify-between items-start">
             <h1 class="text-3xl font-extrabold text-zinc-900">{{ $item->name }}</h1>
             @if($item->isReturned())
-                <span class="rounded-full px-3 py-1 text-sm font-semibold bg-green-100 text-green-800 border border-green-200">Restitué le {{ $item->returned_at->format('d/m/Y') }}</span>
+                <!-- Date de restitution en français -->
+                <span class="rounded-full px-3 py-1 text-sm font-semibold bg-green-100 text-green-800 border border-green-200">Restitué le {{ $item->returned_at->isoFormat('D MMMM YYYY') }}</span>
             @else
-                <span class="rounded-full px-3 py-1 text-sm font-semibold bg-amber-100 text-amber-800 border border-amber-200">En attente depuis le {{ $item->found_on->format('d/m/Y') }}</span>
+                <!-- Date de découverte en français (en haut) -->
+                <span class="rounded-full px-3 py-1 text-sm font-semibold bg-amber-100 text-amber-800 border border-amber-200">En attente depuis le {{ $item->found_on->isoFormat('D MMMM YYYY') }}</span>
             @endif
         </div>
 
@@ -32,6 +34,14 @@
                         <span class="inline-flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full border border-zinc-300" style="background-color: {{ $item->color->value === 'multicolor' ? 'conic-gradient(red, yellow, green, blue, purple)' : $item->color->value }}"></span>
                             {{ $item->color->label() }}
+                        </span>
+                    </li>
+                    <!-- Date de découverte détaillée en français avec diffForHumans -->
+                    <li>
+                        <strong>Découverte :</strong>
+                        <span class="text-zinc-800 font-medium">
+                            {{ $item->found_on->isoFormat('dddd D MMMM YYYY') }}
+                            <span class="text-xs text-rose-500 font-normal">({{ $item->found_on->diffForHumans() }})</span>
                         </span>
                     </li>
                 </ul>
@@ -63,7 +73,6 @@
                 Modifier
             </a>
 
-
             @if(!$item->isReturned())
                 <form action="{{ route('items.return', $item) }}" method="POST">
                     @csrf
@@ -81,7 +90,6 @@
                     Supprimer
                 </button>
             </form>
-
         </div>
     </div>
 </x-layouts.app>
