@@ -29,7 +29,7 @@
 
                 <div>
                     <x-label for="found_on" class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Date de découverte</x-label>
-                    <x-input type="date" id="found_on" name="found_on" :value="old('found_on')" class="rounded-2xl border-rose-200 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-500 py-3" />
+                    <x-input type="date" id="found_on" name="found_on" value="{{ old('found_on', now()->toDateString()) }}" class="rounded-2xl border-rose-200 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-500 py-3" />
                     @error('found_on') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
@@ -57,8 +57,8 @@
                     @foreach($tags as $tag)
                         <label class="inline-flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-xl border border-rose-200 hover:bg-rose-50 transition shadow-xs">
                             <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
-                                   @checked(in_array($tag->id, old('tags', [])))
-                                   class="rounded border-rose-300 text-rose-600 shadow-sm focus:ring-rose-500">
+                            @checked(is_array(old('tags')) && in_array($tag->id, old('tags')))
+                            class="rounded border-rose-300 text-rose-600 shadow-sm focus:ring-rose-500">
                             <span class="text-xs font-semibold text-zinc-700">{{ $tag->name }}</span>
                         </label>
                     @endforeach

@@ -9,22 +9,36 @@
 <body class="text-zinc-900 antialiased min-h-screen flex flex-col">
     <!-- Barre de navigation rose -->
     <nav class="bg-rose-700 text-white shadow-md py-4 px-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="bg-white/10 p-2 rounded-lg">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </div>
-                <div>
-                    <a href="{{ route('items.index') }}" class="font-bold text-xl tracking-tight block">Perdu de vue</a>
-                    <span class="text-xs text-rose-200 uppercase tracking-widest font-medium">Objets trouvés · Gare de Wavre</span>
-                </div>
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <!-- Logo et Titre (inchangés) -->
+        <div class="flex items-center gap-3">
+            <div class="bg-white/10 p-2 rounded-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
+            <div>
+                <a href="{{ route('items.index') }}" class="font-bold text-xl tracking-tight block">Perdu de vue</a>
+                <span class="text-xs text-rose-200 uppercase tracking-widest font-medium">Objets trouvés · Gare de Wavre</span>
+            </div>
+        </div>
 
-            <div class="flex items-center gap-2">
-                <a href="{{ route('items.index') }}" @class(['px-3 py-1.5 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.index'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.index')])>Objets</a>
-                <a href="{{ route('items.create') }}" @class(['px-3 py-1.5 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.create'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.create')])>Ajouter un objet</a>
-                <a href="{{ route('styleguide') }}" @class(['px-3 py-1.5 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('styleguide'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('styleguide')])>Composants</a>
-            </div>
+        <!-- Menu Grand Écran (Ajout de hidden md:flex) -->
+        <div class="hidden md:flex items-center gap-2">
+            <a href="{{ route('items.index') }}" @class(['px-3 py-1.5 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.index'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.index')])>Objets</a>
+            <a href="{{ route('items.create') }}" @class(['px-3 py-1.5 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.create'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.create')])>Ajouter un objet</a>
+        </div>
+
+        <!-- Bouton Hamburger pour Mobile -->
+        <button id="hamburger-btn" class="md:hidden p-2 text-rose-100 hover:text-white hover:bg-white/10 rounded-lg focus:outline-none transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </div>
+
+        <!-- Menu Mobile (Caché par défaut) -->
+        <div id="mobile-menu" class="hidden md:hidden flex-col gap-2 mt-4 pt-4 border-t border-rose-600/50">
+            <a href="{{ route('items.index') }}" @class(['block px-3 py-2 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.index'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.index')])>Objets</a>
+            <a href="{{ route('items.create') }}" @class(['block px-3 py-2 rounded-lg text-sm font-medium transition', 'bg-white/20 text-white font-bold' => request()->routeIs('items.create'), 'hover:bg-white/10 text-rose-100' => !request()->routeIs('items.create')])>Ajouter un objet</a>
         </div>
     </nav>
 
@@ -40,3 +54,13 @@
     </main>
 </body>
 </html>
+
+<script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburgerBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('flex');
+    });
+</script>
